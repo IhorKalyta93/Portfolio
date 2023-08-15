@@ -1,17 +1,19 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+const app = require('express')()
+const server = require('http').createServer(app)
+const { log } = require('console');
+const cors = require('cors')
+const io = require('socket.io')(server, {
+  cors: {
+    origin: '*',
+    methods: ['GET', "POST"]
+  }
+})
+app.use(cors());
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+const PORT = process.env.PORT || 5000;
+app.get('/', (req, res) => {
+  res.send(`Server is running.`)
+})
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+server.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
+
